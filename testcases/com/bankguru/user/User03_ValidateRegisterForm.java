@@ -8,7 +8,6 @@ public class User03_ValidateRegisterForm {
 	
   @BeforeClass
   public void beforeClass() {
-	  driver.get("");
   }
   @Test
   public void f() {
