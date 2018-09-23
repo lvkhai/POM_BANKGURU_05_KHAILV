@@ -16,6 +16,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class AbstractPage {
 
+	//Brower
+	
 	public void openAnyUrl(WebDriver driver, String url) {
 		driver.get(url);
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
@@ -39,6 +41,10 @@ public class AbstractPage {
 
 	public void refreshPage(WebDriver driver) {
 		driver.navigate().refresh();
+	}
+	
+	public void quitBrower(WebDriver driver) {
+		driver.quit();		
 	}
 
 	// WebElement
@@ -85,6 +91,10 @@ public class AbstractPage {
 	public String getAttributeValue(WebDriver driver, String locator, String attributeName) {
 		WebElement element = driver.findElement(By.xpath(locator));
 		return element.getAttribute(attributeName);
+	}
+	public String getText(WebDriver driver, String locator) {
+		WebElement element = driver.findElement(By.xpath(locator));
+		return element.getText();
 	}
 
 	public String getTextElement(WebDriver driver, String locator) {
@@ -179,20 +189,111 @@ public class AbstractPage {
 		}
 		driver.switchTo().window(UDID);
 	}
-	
+
 	public void switchToIframe(WebDriver driver, String locator) {
 		driver.switchTo().frame(locator);
 	}
-	
-	//User Actions
-	
+
+	// User Actions
+
 	public void doubleClickToElement(WebDriver driver, String locator) {
 		WebElement element = driver.findElement(By.xpath(locator));
 		Actions actions = new Actions(driver);
-		actions.doubleClick(element);
-		
+		actions.doubleClick(element).perform();
+	}
+
+	public void hoverMouseToElement(WebDriver driver, String locator) {
+		WebElement element = driver.findElement(By.xpath(locator));
+		Actions action = new Actions(driver);
+		action.moveToElement(element).perform();
+	}
+
+	public void rightClickToElement(WebDriver driver, String locator) {
+		WebElement element = driver.findElement(By.xpath(locator));
+		Actions action = new Actions(driver);
+		action.contextClick(element).perform();
+	}
+
+	public void drapAndDropElement(WebDriver driver, String source, String target) {
+		WebElement startPoint = driver.findElement(By.xpath(source));
+		WebElement endPoint = driver.findElement(By.xpath(target));
+		Actions action = new Actions(driver);
+		action.dragAndDrop(startPoint, endPoint).perform();
+	}
+
+	// Upload
+	public void uploadFile(WebDriver driver, String fileName) {
+		String proDir = System.getProperty("user.dir");
+		String filePath = proDir + "/resources/" + fileName;
+		WebElement element = driver.findElement(By.xpath("//input[@type='file']"));
+		element.sendKeys(filePath);
+	}
+
+	public void upLoadMultiFile(WebDriver driver, String[] fileNames) {
+		String proDir = System.getProperty("user.dir");
+		WebElement element = driver.findElement(By.xpath("//input[@type='file']"));
+		for (String string : fileNames) {
+			String filePath = proDir + "/resources/" + string;
+			element.sendKeys(filePath);
+		}
+	}
+
+	// JavascriptExcutor
+
+	public void openByJS(WebDriver driver, String url) {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("window.location =" + url + ";");
+	}
+
+	public void clickToElementByJS(WebDriver driver, String locator) {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		WebElement element = driver.findElement(By.xpath(locator));
+		js.executeScript("arguments[0].click();", element);
+	}
+
+	public void scrollToButtonPage(WebDriver driver) {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
 
 	}
+
+	public void removeAttributeInDOM(WebDriver driver, String locator, String attribute) {
+		WebElement element = driver.findElement(By.xpath(locator));
+		try {
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			js.executeScript("arguments[0].removeAttribute('" + attribute + "');", element);
+		} catch (Exception e) {
+			e.getMessage();
+		}
+	}
+
+	// Wait
+
+	public void waitForControlPresence(WebDriver driver, String locator) {
+		WebDriverWait wait = new WebDriverWait(driver, 30);
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(locator)));
+	}
+
+	public void waitForControlVisible(WebDriver driver, String locator) {
+		WebDriverWait wait = new WebDriverWait(driver, 30);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(locator)));
+	}
+
+	public void waitForControlClickable(WebDriver driver, String locator) {
+		WebDriverWait wait = new WebDriverWait(driver, 30);
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath(locator)));
+	}
+
+	public void waitForControlInvisible(WebDriver driver, String locator) {
+		WebDriverWait wait = new WebDriverWait(driver, 30);
+		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(locator)));
+	}
+
+	public void waitForControlAlertPresence(WebDriver driver, String locator) {
+		WebDriverWait wait = new WebDriverWait(driver, 30);
+		wait.until(ExpectedConditions.alertIsPresent());
+	}
+
 	
 
 }
