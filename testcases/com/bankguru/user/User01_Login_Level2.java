@@ -17,10 +17,10 @@ import page.ui.RegisterPageUI;
 
 public class User01_Login_Level2 {
 	WebDriver driver;
-	AbstractPage abstractPage = new AbstractPage();
-	LoginPageObject loginPageObject = new LoginPageObject(driver);
-	RegisterPageObject registerPageObject = new RegisterPageObject(driver);
-	AccessDetailObject accessDetailObject = new AccessDetailObject(driver);
+	public AbstractPage abstractPage;
+	public LoginPageObject loginPageObject;
+	public RegisterPageObject registerPageObject;
+	public AccessDetailObject accessDetailObject;
 	String loginPageUrl = "";
 	String userID ="";
 	String passWord= "";
@@ -28,23 +28,31 @@ public class User01_Login_Level2 {
 	@BeforeClass
 	public void beforeClass() {
 		driver = new FirefoxDriver();
+		abstractPage = new AbstractPage();
 		abstractPage.openAnyUrl(driver, "http://demo.guru99.com/v4/");
+		
 	}
 
 	@Test
 	public void TC01_Register() {
+		loginPageObject = new LoginPageObject(driver);
 		loginPageUrl = loginPageObject.getLoginPageUrl();
+		System.out.println(loginPageUrl);
 		loginPageObject.clickHereLink();
+		System.out.println(123);
+
 		
+		registerPageObject = new RegisterPageObject(driver);
 		registerPageObject.senkeyToEmailTextbox("test_auto" + randomNumber() + "@gmail.com");
 		registerPageObject.clickSubmitButton();
 		
+		accessDetailObject = new AccessDetailObject(driver);
 		userID = accessDetailObject.getUserID();
 		passWord = accessDetailObject.getPassword();
 
 	}
 
-	@Test
+	
 	public void TC02_Login() {
 		abstractPage.openAnyUrl(driver, loginPageUrl);
 		
