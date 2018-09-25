@@ -22,44 +22,41 @@ public class User01_Login_Level2 {
 	public RegisterPageObject registerPageObject;
 	public AccessDetailObject accessDetailObject;
 	String loginPageUrl = "";
-	String userID ="";
-	String passWord= "";
+	String userID = "";
+	String passWord = "";
 
 	@BeforeClass
 	public void beforeClass() {
 		driver = new FirefoxDriver();
 		abstractPage = new AbstractPage();
 		abstractPage.openAnyUrl(driver, "http://demo.guru99.com/v4/");
-		
+
 	}
 
 	@Test
 	public void TC01_Register() {
 		loginPageObject = new LoginPageObject(driver);
 		loginPageUrl = loginPageObject.getLoginPageUrl();
-		System.out.println(loginPageUrl);
-		loginPageObject.clickHereLink();
-		System.out.println(123);
 
-		
+		loginPageObject.clickHereLink();
+
 		registerPageObject = new RegisterPageObject(driver);
 		registerPageObject.senkeyToEmailTextbox("test_auto" + randomNumber() + "@gmail.com");
 		registerPageObject.clickSubmitButton();
-		
+
 		accessDetailObject = new AccessDetailObject(driver);
 		userID = accessDetailObject.getUserID();
 		passWord = accessDetailObject.getPassword();
 
 	}
 
-	
+	@Test
 	public void TC02_Login() {
 		abstractPage.openAnyUrl(driver, loginPageUrl);
-		
+
 		loginPageObject.inputUsernameTextbox(userID);
 		loginPageObject.inputPasswordTextbox(passWord);
 		loginPageObject.clickLoginButton();
-				
 
 		Assert.assertTrue(abstractPage.isControlDisplayed(driver,
 				"//marquee[text()=\"Welcome To Manager's Page of Guru99 Bank\"]"));
