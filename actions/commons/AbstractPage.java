@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -16,8 +17,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class AbstractPage {
 
-	//Brower
-	
+	// Brower
+
 	public void openAnyUrl(WebDriver driver, String url) {
 		driver.get(url);
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
@@ -42,9 +43,9 @@ public class AbstractPage {
 	public void refreshPage(WebDriver driver) {
 		driver.navigate().refresh();
 	}
-	
+
 	public void quitBrower(WebDriver driver) {
-		driver.quit();		
+		driver.quit();
 	}
 
 	// WebElement
@@ -56,6 +57,12 @@ public class AbstractPage {
 		WebElement element = driver.findElement(By.xpath(locator));
 		element.clear();
 		element.sendKeys(value);
+	}
+
+	public void pressKeyForElement(WebDriver driver, String locator, Keys keyname) {
+		WebElement element = driver.findElement(By.xpath(locator));
+		Actions action = new Actions(driver);
+		action.sendKeys(element, keyname);
 	}
 
 	public void selectItemInDropDown(WebDriver driver, String locator, String text) {
@@ -92,6 +99,7 @@ public class AbstractPage {
 		WebElement element = driver.findElement(By.xpath(locator));
 		return element.getAttribute(attributeName);
 	}
+
 	public String getText(WebDriver driver, String locator) {
 		WebElement element = driver.findElement(By.xpath(locator));
 		return element.getText();
@@ -293,7 +301,5 @@ public class AbstractPage {
 		WebDriverWait wait = new WebDriverWait(driver, 30);
 		wait.until(ExpectedConditions.alertIsPresent());
 	}
-
-	
 
 }
