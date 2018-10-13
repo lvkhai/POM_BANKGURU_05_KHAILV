@@ -4,30 +4,37 @@ import java.util.Random;
 
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import commons.AbstractPage;
+import commons.AbstractTest;
 import page.objects.AccessDetailObject;
+import page.objects.HomePageObject;
 import page.objects.LoginPageObject;
 import page.objects.RegisterPageObject;
 import page.ui.RegisterPageUI;
 
-public class User01_Login_Level2 {
+public class User_Login_Level3 extends AbstractTest {
 	WebDriver driver;
-	public AbstractPage abstractPage;
-	public LoginPageObject loginPageObject;
-	public RegisterPageObject registerPageObject;
-	public AccessDetailObject accessDetailObject;
+	private AbstractPage abstractPage;
+	private LoginPageObject loginPageObject;
+	private RegisterPageObject registerPageObject;
+	private AccessDetailObject accessDetailObject;
+	private HomePageObject homePageObject;
 	String loginPageUrl = "";
 	String userID = "";
 	String passWord = "";
 
+	@Parameters("brower")
 	@BeforeClass
-	public void beforeClass() {
-		driver = new FirefoxDriver();
+	public void beforeClass(String browerName) {
+		driver = openMultiBrower(browerName);
 		abstractPage = new AbstractPage();
 		abstractPage.openAnyUrl(driver, "http://demo.guru99.com/v4/");
 
@@ -51,15 +58,15 @@ public class User01_Login_Level2 {
 	}
 
 	@Test
-	public void TC02_Login() {
-		abstractPage.openAnyUrl(driver, loginPageUrl);
+	public void TC02_Login() throws InterruptedException {
+		accessDetailObject.openAnyUrl(driver, loginPageUrl);
 
 		loginPageObject.inputUsernameTextbox(userID);
 		loginPageObject.inputPasswordTextbox(passWord);
 		loginPageObject.clickLoginButton();
 
-		Assert.assertTrue(abstractPage.isControlDisplayed(driver,
-				"//marquee[text()=\"Welcome To Manager's Page of Guru99 Bank\"]"));
+		homePageObject = new HomePageObject(driver);
+		Assert.assertTrue(homePageObject.isHomePageDisplayed());
 
 	}
 

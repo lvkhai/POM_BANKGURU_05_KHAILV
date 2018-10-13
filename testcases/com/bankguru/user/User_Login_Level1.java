@@ -11,7 +11,7 @@ import org.testng.annotations.Test;
 
 import commons.AbstractPage;
 
-public class User01_Login_Level1 {
+public class User_Login_Level1 {
 	WebDriver driver;
 	AbstractPage abstractPage = new AbstractPage();
 	String loginPageUrl;

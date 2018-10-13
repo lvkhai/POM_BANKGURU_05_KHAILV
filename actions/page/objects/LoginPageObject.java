@@ -21,8 +21,8 @@ public class LoginPageObject extends AbstractPage{
 	}
 	
 	public void inputPasswordTextbox(String password) {
-		waitForControlVisible(driver, LoginPageUI.USER_ID_TEXTBOX);
-		senkeysToElement(driver, LoginPageUI.USER_ID_TEXTBOX, password);
+		waitForControlVisible(driver, LoginPageUI.PASSWORD_TEXTBOX);
+		senkeysToElement(driver, LoginPageUI.PASSWORD_TEXTBOX, password);
 	}
 	
 	public void clickLoginButton() {
@@ -34,6 +34,7 @@ public class LoginPageObject extends AbstractPage{
 		waitForControlVisible(driver, LoginPageUI.HERE_LINK);
 		clickToElement(driver, LoginPageUI.HERE_LINK);
 	}
+	
 	
 
 }
